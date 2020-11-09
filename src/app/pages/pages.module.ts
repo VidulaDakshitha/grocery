@@ -17,6 +17,9 @@ import { ImageUploaderModule } from 'ngx-image-uploader-next';
 import { FormsModule as ngFormsModule, ReactiveFormsModule } from '@angular/forms';
 import { OrderComponent } from './order/order.component';
 import { CatergoryComponent } from './catergory/catergory.component';
+import { LoginComponent } from './login/login.component';
+import { SettingsComponent } from './settings/settings.component';
+
 
 @NgModule({
   imports: [
@@ -36,6 +39,7 @@ import { CatergoryComponent } from './catergory/catergory.component';
     ngFormsModule,
     NbTabsetModule,
     ReactiveFormsModule,
+  
   ],
   declarations: [
     PagesComponent,
@@ -43,6 +47,8 @@ import { CatergoryComponent } from './catergory/catergory.component';
     ProductsComponent,
     OrderComponent,
     CatergoryComponent,
+    LoginComponent,
+    SettingsComponent,
   ],
 })
 export class PagesModule {

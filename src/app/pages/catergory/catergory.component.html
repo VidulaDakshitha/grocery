@@ -1,1 +1,140 @@
-<p>catergory works!</p>
+
+<div class="d-flex justify-content-end">
+    <button  nbButton  hero status="primary" class="pull-right" (click)="openWindow(contentTemplate)">
+      <i class="fas fa-dolly mr-3"></i> New Catergory
+    </button>
+  
+  </div>
+
+<div class="row mt-5">
+    <div class="col-lg-12">
+      <nb-card>
+        <nb-card-header>Catergory Management </nb-card-header>
+        <nb-card-body>
+       
+          <table class="table table-striped">
+            <thead>
+              <tr>
+              <th><p><b>Image</b></p></th>
+              <th><p><b>Catergory Name</b></p></th>
+              <th><p><b>Availability</b></p></th>
+              <th><p><b>Action</b></p></th>
+            </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let items of productData">
+                <td style="height: 10%;width: 20%;"><img class="img-fluid"  src= "{{items.image}}" style="height: 100px;width: 100%;"/></td>
+                <td><p>{{items.catergoryName}}</p></td>
+                <td *ngIf="items.catergoryStock==1"><p>In Stock</p></td>
+                <td *ngIf="items.catergoryStock==2"><p style="color:red">Out of Stock</p></td>
+              
+                <td>
+                  <div class="d-flex">
+                  <p (click)="setValuesEdit(items.image,items.catergoryName,items.catergoryDescription,items.catergoryStock,items.id); openWindowEdit(edittemplate); "><i class="nb-edit" style="font-size: xx-large;"></i></p>
+                  <p><i class="nb-trash"  style="font-size: xx-large;"></i></p>
+                </div>
+                </td>
+              </tr>
+          
+            </tbody>
+
+          </table>
+ 
+        </nb-card-body>
+      </nb-card>
+ 
+      </div></div>
+
+
+
+      <ng-template  class="window" #contentTemplate let-data>
+        <p >Add Catergory Image</p>
+<!-- <form #productForm="ngForm" (ngSubmit)="onProductSubmit(productForm.value)"> -->
+  <form [formGroup]="addCatergory" >
+        <div class="row">
+          <div class="col-sm-6">
+            <ngx-image-uploader [options]="options" (upload)="onUpload($event)"></ngx-image-uploader>
+
+          </div>
+
+          <div class="col-sm-6">
+            <div class="form-group">
+                <label for="inputLastName" class="label">Caterory Name</label>
+                <input  type="text" nbInput fullWidth shape="semi-round" id="catergoryName" placeholder="Catergory Name" formControlName="catergoryName">
+              </div>
+
+          </div>
+
+        </div>
+
+
+  
+
+        <textarea  rows="5" nbInput fullWidth shape="round"  placeholder="Add a product description..." formControlName="catergoryDescription"></textarea>
+
+        <div class="d-flex justify-content-end mt-3">
+          <button  nbButton  hero status="success" class="pull-right" (click)="onCatergorySubmit()">
+             Save
+          </button>
+        
+        </div>
+      </form>
+      </ng-template>
+      
+      <ng-template #disabledEsc>
+        Disabled close on escape click.
+      </ng-template>
+      
+
+
+
+      <ng-template  class="window" #edittemplate let-data>
+       
+<!-- <form #productForm="ngForm" (ngSubmit)="onProductSubmit(productForm.value)"> -->
+  <form [formGroup]="EditCatergory" >
+        <div class="row">
+          <div class="col-sm-6 text-center" *ngIf="!updateImage">
+          <img src="{{productEditImage}}" style="width: 220px;"/>
+          <button nbButton  hero status="secondary" (click)="UpdateImageFunction()">Update Image</button>
+        </div>
+
+          <div class="col-sm-6" *ngIf="updateImage">
+            <ngx-image-uploader [options]="options" (upload)="onUploadEdit($event)"></ngx-image-uploader>
+
+          </div>
+          <div class="col-sm-6 ">
+     
+            <div class="form-group">
+                <label  for="inputLastName" class="label">Catergory Name</label>
+                <input type="text" nbInput fullWidth shape="semi-round"  placeholder="Product Name" formControlName="catergoryNameEdit">
+              </div>
+
+
+            <div class="form-group">
+              <label for="inputLastName" class="label">Select Stock</label>
+              <nb-select fullWidth shape="semi-round" formControlName="catergoryStockEdit" >
+                <nb-option value="1">In Stock</nb-option>
+                <nb-option value="2">Out of Stock</nb-option>
+              </nb-select>
+            </div>
+
+
+        
+
+
+          </div>
+        </div>
+
+
+
+
+        <textarea  rows="5" nbInput fullWidth shape="round"  placeholder="Add a product description..." formControlName="catergoryDescriptionEdit" ></textarea>
+
+        <div class="d-flex justify-content-end mt-3">
+          <button  nbButton  hero status="success" class="pull-right" (click)="oncatergoryUpdate()">
+             Update
+          </button>
+        
+        </div>
+      </form>
+      </ng-template>

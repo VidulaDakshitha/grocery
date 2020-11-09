@@ -1,0 +1,24 @@
+[_ngcontent-sjt-c227]{
+max-width: 100% !important;
+}
+
+[_nghost-osj-c228]{
+    max-width: 100% !important;
+}
+
+[_nghost-obc-c228] {
+    max-width: 100% !important;
+}
+
+nb-auth-block{
+    max-width: 100% !important;
+  }
+
+  :host{
+    max-width: 65rem !important;
+
+    ::ng-deep {
+        form {
+          width: 100%;
+        }
+  }}

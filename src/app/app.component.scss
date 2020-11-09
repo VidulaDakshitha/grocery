@@ -1,0 +1,12 @@
+nb-auth-block{
+display: none !important;
+  }
+
+  :host{
+    max-width: 65rem !important;
+
+    ::ng-deep {
+        form {
+          width: 100%;
+        }
+  }}

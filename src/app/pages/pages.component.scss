@@ -17,3 +17,45 @@
   }
 }
 
+[_ngcontent-sjt-c227]{
+  max-width: 100% !important;
+  }
+  
+  [_nghost-osj-c228]{
+      max-width: 100% !important;
+  }
+  
+  [_nghost-obc-c228] {
+      max-width: 100% !important;
+  }
+  
+  [_nghost-sue-c228] {
+    max-width: 100% !important;
+  }  
+
+  [_nghost-kqi-c228]{
+    max-width: 100% !important;
+  }
+
+  [_nghost-crg-c227] nb-auth-block[_ngcontent-crg-c227]
+  {
+    max-width: 100% !important;
+  }
+
+  nb-auth-block{
+    max-width: 100% !important;
+    margin: 0 !important;
+  }
+
+  nb-card-body{
+    max-width: 100% !important;
+    margin: 0 !important;
+  }
+  :host{
+    max-width: 65rem !important;
+
+    ::ng-deep {
+        form {
+          width: 100%;
+        }
+  }}

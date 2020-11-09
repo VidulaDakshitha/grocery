@@ -17,8 +17,8 @@
               <th><p><b>Image</b></p></th>
               <th><p><b>Product Name</b></p></th>
               <th><p><b>stock</b></p></th>
-              <th><p><b>Product Price</b></p></th>
-              <th><p><b>Discount</b></p></th>
+              <th><p><b>Product Price රු</b></p></th>
+              <th><p><b>Discount Price රු</b></p></th>
               <th><p><b>Action</b></p></th>
             </tr>
             </thead>
@@ -26,12 +26,13 @@
               <tr *ngFor="let items of productData">
                 <td style="height: 10%;width: 20%;"><img class="img-fluid"  src= "{{items.image}}" style="height: 100px;width: 100%;"/></td>
                 <td><p>{{items.productName}}</p></td>
-                <td><p>in stock</p></td>
+                <td *ngIf="items.productStatus==1"><p>In Stock</p></td>
+                <td *ngIf="items.productStatus==2"><p style="color:red">Out of Stock</p></td>
                 <td><p>{{items.productPrice}}</p></td>
                 <td><p>{{items.productDiscount}}</p></td>
                 <td>
                   <div class="d-flex">
-                  <p><i class="nb-edit" style="font-size: xx-large;"></i></p>
+                  <p (click)="setValuesEdit(items.image,items.productName,items.productPrice,items.productDiscount,items.productDescription,items.productStatus,items.id); openWindowEdit(edittemplate); "><i class="nb-edit" style="font-size: xx-large;"></i></p>
                   <p><i class="nb-trash"  style="font-size: xx-large;"></i></p>
                 </div>
                 </td>
@@ -60,7 +61,7 @@
           <div class="col-sm-6">
             <div class="form-group">
               <label for="inputLastName" class="label">Select Catergory</label>
-              <nb-select ngModel selected="1" fullWidth shape="semi-round" formControlName="productCatergory">
+              <nb-select  selected="1" fullWidth shape="semi-round" formControlName="productCatergory">
                 <nb-option value="1">Select catergory</nb-option>
                 <nb-option value="2">Option 2</nb-option>
               </nb-select>
@@ -69,7 +70,7 @@
 
             <div class="form-group">
               <label for="inputLastName" class="label">Product Name</label>
-              <input ngModel type="text" nbInput fullWidth shape="semi-round" id="inputLastName" placeholder="Product Name" formControlName="productName">
+              <input  type="text" nbInput fullWidth shape="semi-round" id="productName" placeholder="Product Name" formControlName="productName">
             </div>
 
 
@@ -81,7 +82,7 @@
           <div class="col-sm-6">
             <div class="form-group">
               <label for="inputLastName" class="label">Product Price රු</label>
-              <input ngModel type="number" nbInput fullWidth shape="semi-round" id="inputLastName" placeholder="Product price" formControlName="productPrice">
+              <input  type="number" nbInput fullWidth shape="semi-round" id="productPrice" placeholder="Product price" formControlName="productPrice">
             </div>
 
           </div>
@@ -91,14 +92,14 @@
 
             <div class="form-group">
               <label for="inputLastName" class="label">Product Discount රු</label>
-              <input ngModel type="number" nbInput fullWidth shape="semi-round" id="inputLastName" placeholder="Product discount" formControlName="productDiscount">
+              <input  type="number" nbInput fullWidth shape="semi-round" id="productDiscount" placeholder="Product discount" formControlName="productDiscount">
             </div>
 
 
           </div>
         </div>
 
-        <textarea ngModel rows="5" nbInput fullWidth shape="round"  placeholder="Add a product description..." formControlName="productDescription"></textarea>
+        <textarea  rows="5" nbInput fullWidth shape="round"  placeholder="Add a product description..." formControlName="productDescription"></textarea>
 
         <div class="d-flex justify-content-end mt-3">
           <button  nbButton  hero status="success" class="pull-right" (click)="onProductSubmit()">
@@ -113,3 +114,80 @@
         Disabled close on escape click.
       </ng-template>
       
+
+
+
+      <ng-template  class="window" #edittemplate let-data>
+       
+<!-- <form #productForm="ngForm" (ngSubmit)="onProductSubmit(productForm.value)"> -->
+  <form [formGroup]="EditProducts" >
+        <div class="row">
+          <div class="col-sm-6 text-center" *ngIf="!updateImage">
+          <img src="{{productEditImage}}" style="width: 220px;"/>
+          <button nbButton  hero status="secondary" (click)="UpdateImageFunction()">Update Image</button>
+        </div>
+
+          <div class="col-sm-6" *ngIf="updateImage">
+            <ngx-image-uploader [options]="options" (upload)="onUploadEdit($event)"></ngx-image-uploader>
+
+          </div>
+          <div class="col-sm-6 ">
+            <div class="form-group">
+              <label for="inputLastName" class="label">Select Catergory</label>
+              <nb-select fullWidth shape="semi-round" formControlName="productCatergoryEdit" >
+                <nb-option value="1">Select catergory</nb-option>
+                <nb-option value="2">Option 2</nb-option>
+              </nb-select>
+            </div>
+
+
+            <div class="form-group">
+              <label for="inputLastName" class="label">Select Stock</label>
+              <nb-select fullWidth shape="semi-round" formControlName="productStockEdit" >
+                <nb-option value="1">In Stock</nb-option>
+                <nb-option value="2">Out of Stock</nb-option>
+              </nb-select>
+            </div>
+
+
+            <div class="form-group">
+              <label  for="inputLastName" class="label">Product Name</label>
+              <input type="text" nbInput fullWidth shape="semi-round"  placeholder="Product Name" formControlName="productNameEdit">
+            </div>
+
+
+          </div>
+        </div>
+
+
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label for="inputLastName" class="label">Product Price රු</label>
+              <input  type="number" nbInput fullWidth shape="semi-round"  placeholder="Product price" formControlName="productPriceEdit">
+            </div>
+
+          </div>
+          <div class="col-sm-6">
+     
+
+
+            <div class="form-group">
+              <label for="inputLastName" class="label">Product Discount රු</label>
+              <input type="number" nbInput fullWidth shape="semi-round"  placeholder="Product discount" formControlName="productDiscountEdit">
+            </div>
+
+
+          </div>
+        </div>
+
+        <textarea  rows="5" nbInput fullWidth shape="round"  placeholder="Add a product description..." formControlName="productDescriptionEdit" ></textarea>
+
+        <div class="d-flex justify-content-end mt-3">
+          <button  nbButton  hero status="success" class="pull-right" (click)="onProductUpdate()">
+             Update
+          </button>
+        
+        </div>
+      </form>
+      </ng-template>

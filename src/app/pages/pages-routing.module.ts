@@ -7,11 +7,18 @@ import { ECommerceComponent } from './e-commerce/e-commerce.component';
 import { NotFoundComponent } from './miscellaneous/not-found/not-found.component';
 import {ProductsComponent} from './products/products.component';
 import {OrderComponent} from './order/order.component';
+import {CatergoryComponent} from './catergory/catergory.component';
+import {SettingsComponent} from './settings/settings.component';
+
 
 const routes: Routes = [{
   path: '',
   component: PagesComponent,
   children: [
+    {
+      path: 'dashboard',
+      component: ECommerceComponent,
+    },
     {
       path: 'dashboard',
       component: ECommerceComponent,
@@ -25,8 +32,16 @@ const routes: Routes = [{
       component: ProductsComponent,
     },
     {
+      path: 'catergory',
+      component: CatergoryComponent,
+    },
+    {
       path: 'order',
       component: OrderComponent,
+    },
+    {
+      path: 'setting',
+      component: SettingsComponent,
     },
     {
       path: 'layout',

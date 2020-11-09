@@ -15,6 +15,9 @@ import {
 } from '@nebular/theme';
 import { NbEvaIconsModule } from '@nebular/eva-icons';
 import { NbSecurityModule } from '@nebular/security';
+import { FormsModule as ngFormsModule, ReactiveFormsModule } from '@angular/forms';
+
+import {LoginComponent} from 'app/pages/login/login.component';
 
 import {
   FooterComponent,
@@ -52,6 +55,7 @@ const NB_MODULES = [
   NbSelectModule,
   NbIconModule,
   NbEvaIconsModule,
+  ngFormsModule,
 ];
 const COMPONENTS = [
   HeaderComponent,
@@ -61,6 +65,7 @@ const COMPONENTS = [
   OneColumnLayoutComponent,
   ThreeColumnsLayoutComponent,
   TwoColumnsLayoutComponent,
+ // LoginComponent,
 ];
 const PIPES = [
   CapitalizePipe,
