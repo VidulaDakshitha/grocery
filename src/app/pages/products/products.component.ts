@@ -7,6 +7,7 @@ import {AngularFireDatabase} from '@angular/fire/database';
 import {FormControl, FormGroup, FormsModule} from '@angular/forms';
 import { observable } from 'rxjs';
 import Swal from 'sweetalert2';
+import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'ngx-products',
@@ -18,10 +19,12 @@ import Swal from 'sweetalert2';
 
 
 export class ProductsComponent implements OnInit {
-
+  modalRef: BsModalRef;
+  modalRef2: BsModalRef;
   fileData: string;
   fileDataEdit: string;
   productData: Array<String>;
+  catergoryData: Array<String>;
   productEditImage: '';
   updateImage = false;
   value : NbWindowRef;
@@ -29,7 +32,7 @@ export class ProductsComponent implements OnInit {
   updateID = '';
 
  addProducts = new FormGroup({
-    productCatergory: new FormControl('1'),
+    productCatergory: new FormControl(''),
     productName: new FormControl(''),
     productPrice: new FormControl(''),
     productDiscount: new FormControl(''),
@@ -37,7 +40,7 @@ export class ProductsComponent implements OnInit {
   })
 
   EditProducts = new FormGroup({
-    productCatergoryEdit: new FormControl('2'),
+    productCatergoryEdit: new FormControl(''),
     productNameEdit: new FormControl(''),
     productPriceEdit: new FormControl(''),
     productDiscountEdit: new FormControl(''),
@@ -116,9 +119,28 @@ onUploadEdit(file: ImageResult) {
 }
 
 
-  constructor(private windowService: NbWindowService, private http: HttpClient, private db: AngularFireDatabase) { 
+
+  constructor(private windowService: NbWindowService, private http: HttpClient, private db: AngularFireDatabase, private modalService: BsModalService) { 
 
   }
+ 
+  openModal(template: TemplateRef<any>) {
+    let config = {       backdrop: true,       ignoreBackdropClick: true     };
+    this.modalRef = this.modalService.show(template, config);
+    this.modalRef.onHide.subscribe(val => {
+      this.updateImage = false;
+      
+      });
+  }
+
+
+  openModal2(insert: TemplateRef<any>) {
+    let config = {       backdrop: true,       ignoreBackdropClick: true     };
+    this.modalRef = this.modalService.show(insert, config);
+ 
+  }
+
+
 
   openWindow(contentTemplate) {
     this.value2 = this.windowService.open(
@@ -164,15 +186,15 @@ this.updateImage = false;
   ngOnInit(): void {
 
 
-  //   const headers = { 'Authorization': 'Bearer my-token', 'My-Custom-Header': 'foobar' }
-  //   this.http.get<any>('https://jsonplaceholder.typicode.com/posts', { headers }).subscribe({
-  //     next: data => {
-  //         console.warn(data);
-  //     },
-  //     error: error => { 
-  //       console.warn(error);
-  //     },
-  // })
+    const headers = { 'Authorization': 'Bearer my-token', 'My-Custom-Header': 'foobar' }
+    this.http.get<any>('https://jsonplaceholder.typicode.com/posts', { headers }).subscribe({
+      next: data => {
+          console.warn(data);
+      },
+      error: error => { 
+        console.warn(error);
+      },
+  })
 
 
 
@@ -199,13 +221,30 @@ this.productData = [];
 
 
 
+this.db.database.ref('catergory').on('value', (snapshot) => {
+
+  this.catergoryData = [];
+  
+  
+     snapshot.forEach(data => {
+      this.catergoryData =   [...this.catergoryData, {id: data.key, ... data.val()}];
+  
+  console.log(this.catergoryData)
+  
+     });
+    }
+  );
+  
+
+
 
   }
 
-  setValuesEdit(image, productName, productPrice, productDiscount, productDescription, productStatus, id) {
+  setValuesEdit(image, productName, productPrice, productDiscount, productDescription, productStatus, id, catergory) {
 console.warn('working')
    
     this.EditProducts.get('productNameEdit').patchValue(productName);
+    this.EditProducts.get('productCatergoryEdit').patchValue(catergory);
     this.EditProducts.get('productPriceEdit').patchValue(productPrice);
     this.EditProducts.get('productDiscountEdit').patchValue(productDiscount);
     this.EditProducts.get('productStockEdit').patchValue(productStatus);
@@ -220,6 +259,7 @@ console.warn('working')
   UpdateImageFunction(){
     //this.value.close()
     this.updateImage = true;
+
   }
 
 
@@ -239,7 +279,7 @@ productDescription: this.addProducts.value.productDescription,
 this.db.database.ref('product').push().set(data).catch(err => console.warn(err));
  this.addProducts.reset();
  this.value2.close();
-
+ this.modalRef.hide();
  Swal.fire(
   'Good job!',
   'You clicked the button!',
@@ -288,11 +328,11 @@ this.db.database.ref('product').push().set(data).catch(err => console.warn(err))
         this.db.database.ref(`product/${data.key}/`).update(data1)
       })
     })
-    this.value.close();
+this.modalRef.hide();
 
     Swal.fire(
       'Good job!',
-      'You clicked the button!',
+      'Successfully Updated!',
       'success'
     )
 

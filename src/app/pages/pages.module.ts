@@ -19,8 +19,8 @@ import { OrderComponent } from './order/order.component';
 import { CatergoryComponent } from './catergory/catergory.component';
 import { LoginComponent } from './login/login.component';
 import { SettingsComponent } from './settings/settings.component';
-
-
+import { ModalModule } from 'ngx-bootstrap/modal';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 @NgModule({
   imports: [
     PagesRoutingModule,
@@ -39,7 +39,8 @@ import { SettingsComponent } from './settings/settings.component';
     ngFormsModule,
     NbTabsetModule,
     ReactiveFormsModule,
-  
+    ModalModule.forRoot(),
+    BsDropdownModule.forRoot(),
   ],
   declarations: [
     PagesComponent,

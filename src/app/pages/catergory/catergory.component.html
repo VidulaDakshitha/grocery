@@ -1,6 +1,6 @@
 
 <div class="d-flex justify-content-end">
-    <button  nbButton  hero status="primary" class="pull-right" (click)="openWindow(contentTemplate)">
+    <button  nbButton  hero status="primary" class="pull-right" (click)="openModal2(insert); ">
       <i class="fas fa-dolly mr-3"></i> New Catergory
     </button>
   
@@ -23,14 +23,14 @@
             </thead>
             <tbody>
               <tr *ngFor="let items of productData">
-                <td style="height: 10%;width: 20%;"><img class="img-fluid"  src= "{{items.image}}" style="height: 100px;width: 100%;"/></td>
+                <td style="height: 100px;width: 200px;"><img class="img-fluid"  src= "{{items.image}}" style="height: 100%;width: 100%;"/></td>
                 <td><p>{{items.catergoryName}}</p></td>
                 <td *ngIf="items.catergoryStock==1"><p>In Stock</p></td>
                 <td *ngIf="items.catergoryStock==2"><p style="color:red">Out of Stock</p></td>
               
                 <td>
                   <div class="d-flex">
-                  <p (click)="setValuesEdit(items.image,items.catergoryName,items.catergoryDescription,items.catergoryStock,items.id); openWindowEdit(edittemplate); "><i class="nb-edit" style="font-size: xx-large;"></i></p>
+                  <p (click)="setValuesEdit(items.image,items.catergoryName,items.catergoryDescription,items.catergoryStock,items.id); openModal(template); "><i class="nb-edit" style="font-size: xx-large;"></i></p>
                   <p><i class="nb-trash"  style="font-size: xx-large;"></i></p>
                 </div>
                 </td>
@@ -138,3 +138,123 @@
         </div>
       </form>
       </ng-template>
+
+
+      
+      <ng-template bsModal #insert [config]="{backdrop: 'static',  keyboard: false}" 
+aria-labelledby="myLargeModalLabel">
+
+
+  <div class="modal-header">
+    <h6 class="modal-title pull-left">Add Catergory</h6>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" style="z-index: 20;">
+    <p >Add Catergory Image</p>
+    <!-- <form #productForm="ngForm" (ngSubmit)="onProductSubmit(productForm.value)"> -->
+      <form [formGroup]="addCatergory" >
+            <div class="row">
+              <div class="col-sm-6">
+                <ngx-image-uploader [options]="options" (upload)="onUpload($event)"></ngx-image-uploader>
+    
+              </div>
+    
+              <div class="col-sm-6">
+                <div class="form-group">
+                    <label for="inputLastName" class="label">Caterory Name</label>
+                    <input  type="text" nbInput fullWidth shape="semi-round" id="catergoryName" placeholder="Catergory Name" formControlName="catergoryName">
+                  </div>
+    
+              </div>
+    
+            </div>
+    
+    
+            <div class="form-group mt-3">
+    
+            <textarea  rows="5" nbInput fullWidth shape="round"  placeholder="Add a product description..." formControlName="catergoryDescription"></textarea>
+          </div>
+
+            <div class="d-flex justify-content-end mt-3">
+              <button  nbButton  hero status="success" class="pull-right" (click)="onCatergorySubmit()">
+                 Save
+              </button>
+            
+            </div>
+          </form>
+  </div>
+
+</ng-template>
+
+
+
+<ng-template bsModal #template [config]="{backdrop: 'static',  keyboard: false}" 
+aria-labelledby="myLargeModalLabel">
+
+
+  <div class="modal-header">
+    <h6 class="modal-title pull-left">Edit Catergory</h6>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="EditCatergory" >
+      <div class="row">
+        <div class="col-sm-6 text-center" *ngIf="!updateImage">
+        <img src="{{productEditImage}}" style="width: 220px;"/>
+        <button nbButton  hero status="secondary" (click)="UpdateImageFunction()">Update Image</button>
+      </div>
+
+        <div class="col-sm-6" *ngIf="updateImage">
+          <ngx-image-uploader [options]="options" (upload)="onUploadEdit($event)"></ngx-image-uploader>
+
+        </div>
+        <div class="col-sm-6 ">
+   
+          <div class="form-group">
+              <label  for="inputLastName" class="label">Catergory Name</label>
+              <input type="text" nbInput fullWidth shape="semi-round"  placeholder="Product Name" formControlName="catergoryNameEdit">
+            </div>
+
+<!-- 
+          <div class="form-group">
+            <label for="inputLastName" class="label">Select Stock</label>
+            <nb-select fullWidth shape="semi-round" formControlName="catergoryStockEdit" >
+              <nb-option value="1">In Stock</nb-option>
+              <nb-option value="2">Out of Stock</nb-option>
+            </nb-select>
+          </div> -->
+
+          <div class="form-group">
+            <label  class="label" for="sel1">Select Stock</label>
+            <select class="form-control" id="sel1" style="border-radius: 10px;background-color: #f7f9fc;box-shadow: none;" formControlName="catergoryStockEdit">
+              <option value="1">In Stock</option>
+              <option value="2">Out of Stock</option>
+            
+            </select>
+          </div>
+      
+
+
+        </div>
+      </div>
+
+
+      <div class="form-group mt-3">
+
+      <textarea  rows="5" nbInput fullWidth shape="round"  placeholder="Add a product description..." formControlName="catergoryDescriptionEdit" ></textarea>
+    </div>
+      <div class="d-flex justify-content-end mt-3">
+        <button  nbButton  hero status="success" class="pull-right" (click)="oncatergoryUpdate()">
+           Update
+        </button>
+      
+      </div>
+    </form>
+
+  </div>
+</ng-template>
+

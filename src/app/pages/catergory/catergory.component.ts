@@ -8,7 +8,7 @@ import {AngularFireDatabase} from '@angular/fire/database';
 import {FormControl, FormGroup, FormsModule} from '@angular/forms';
 import { observable } from 'rxjs';
 import Swal from 'sweetalert2';
-
+import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'ngx-catergory',
@@ -17,7 +17,8 @@ import Swal from 'sweetalert2';
 })
 export class CatergoryComponent implements OnInit {
 
-
+  modalRef: BsModalRef;
+  modalRef2: BsModalRef;
   fileData: string;
   fileDataEdit: string;
   productData: Array<String>;
@@ -111,9 +112,24 @@ onUploadEdit(file: ImageResult) {
 }
 
 
-constructor(private windowService: NbWindowService, private http: HttpClient, private db: AngularFireDatabase) { }
+constructor(private windowService: NbWindowService, private http: HttpClient, private db: AngularFireDatabase,  private modalService: BsModalService) { }
 
 
+openModal(template: TemplateRef<any>) {
+  let config = {       backdrop: true,       ignoreBackdropClick: true     };
+  this.modalRef = this.modalService.show(template, config);
+  this.modalRef.onHide.subscribe(val => {
+    this.updateImage = false;
+    
+    });
+}
+
+
+openModal2(insert: TemplateRef<any>) {
+  let config = {       backdrop: true,       ignoreBackdropClick: true     };
+  this.modalRef = this.modalService.show(insert, config);
+
+}
 
 
 
@@ -230,7 +246,7 @@ catergoryDescription: this.addCatergory.value.catergoryDescription,
 this.db.database.ref('catergory').push().set(data).catch(err => console.warn(err));
  this.addCatergory.reset();
  this.value2.close();
-
+ this.modalRef.hide();
  Swal.fire(
   'Good job!',
   'You clicked the button!',
@@ -274,7 +290,7 @@ this.db.database.ref('catergory').push().set(data).catch(err => console.warn(err
       })
     })
     this.value.close();
-
+    this.modalRef.hide();
     Swal.fire(
       'Good job!',
       'You clicked the button!',
